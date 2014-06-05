@@ -141,7 +141,9 @@ $(function() {
 
 		// leaflet API key tiler
 		//L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', { maxZoom: 18, detectRetina: true }).addTo(map);
-		
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    		maxZoom:18, detectRetina: true}).addTo(map);
 
 
 		// set map bounds
