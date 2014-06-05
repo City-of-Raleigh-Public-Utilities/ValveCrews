@@ -23,7 +23,7 @@ h1 {
 
 .wrapper {
 	width: 1470px;
-	height: 740px;
+	height: 540px;
 	margin: 50px auto;
 }
 
@@ -46,7 +46,7 @@ h1 {
 
 #map {
 	width: 950px;
-	height: 720px;
+	height: 520px;
 	background: transparent;
 }
 

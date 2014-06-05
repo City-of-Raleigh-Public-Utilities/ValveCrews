@@ -57,46 +57,87 @@ $(function() {
 
 		// load leaflet map
 		map = L.map('map').setView([35.843768,-78.6450559], 11);
-		
+
+		// $('.leaflet-popup-content').on('click', function(){
+		// 	alert('IT WORKED');
+		// });
+		function doThis(){
+			var dog = "CAT";
+  			alert(dog);
+  		};
 		function setGridStyle(feature){
 			switch (feature.properties.STATUS){
-				case 'INCOMPLETE': return {color: '#FF0000', fillColor: '#FF4040', fillOpacity: 0.5, "weight": .2, };
-				case 'COMPLETE': return {color: '#9FEE00', fillColor: '#B9F73E', fillOpacity: 0.5, "weight": .2, };
-				case 'INPROGRESS': return {color: '#009999', fillColor: '#33CCCC', fillOpacity: 0.5, "weight": .2, };
+				case 'INCOMPLETE': return {color: '#A60000', fillColor: '#FF7373', fillOpacity: 0.2, "weight": .2, };
+				case 'COMPLETE': return {color: '#679B00', fillColor: '#C9F76F', fillOpacity: 0.5, "weight": .2, };
+				case 'INPROGRESS': return {color: '#006363', fillColor: '#5CCCCC', fillOpacity: 0.5, "weight": .2, };
 			}
-		}
+		};
 
 		var buttonGroup = $('<div id="buttons" class="btn-group"></div>');
 		popupContent = {
-  	 		'COMPLETE' : '<button type="button" class="btn btn-success">COMPLETE</button>',
+  	 		'COMPLETE' : '<button type="button" id="complete" class="btn btn-success">COMPLETE</button>',
   	 		'INPROGRESS' : '<button type="button" class="btn btn-info">INPROGRESS</button>',
   	 		'INCOMPLETE' : '<button type="button" class="btn btn-danger">INCOMPLETE</button>'
   		};
   		
+  		
 		var popup = '<div id="buttons" class="btn-group">'+ popupContent.COMPLETE + popupContent.INPROGRESS + popupContent.INCOMPLETE + '</div>';
   		// for (var each in popupContent){
-  			
+  		//function complete()
   		// 	$('#buttons', buttonGroup).append(popupContent[each]);
   		// };
   		
   		// var str = buttonGroup.prop('innerHTML');
+  		
 
+  		function complete(e) {
+    		var layer = e.target;
 
-		function gridAction(feature, layer){
+    		layer.setStyle({color: '#679B00', fillColor: '#C9F76F', fillOpacity: 0.5, "weight": .2
+    		});
 
-			// var popup = L.popup().setContent(str);
-			layer.bindPopup(popup);
-
-
+    		if (!L.Browser.ie && !L.Browser.opera) {
+        		layer.bringToFront();
+    		}
 		}
 
+		var grid;
 
+		function incomplete(e) {
+      		var layer = e.target;
+			layer.setStyle({color: '#A60000', fillColor: '#FF7373', fillOpacity: 0.2, "weight": .2})
 
-		var grid = L.esri.featureLayer('http://mapstest.raleighnc.gov/arcgis/rest/services/PublicUtility/ValveCrewTracking/MapServer/1',
-            {
+		}
+		function inprogress(e){
+			var layer = e.target;
+			layer.setStyle({color: '#006363', fillColor: '#5CCCCC', fillOpacity: 0.5, "weight": .2 })
+
+			}
+		
+		// function setPopup(e){
+		// 	var layer = e.target;
+		// 	layer.bindPopup(popup);
+
+		// };
+
+		function gridAction(feature, layer){
+			layer.on({
+				//mouseover: highlightFeature,
+				//mouseout: resetHighlight,
+				click: complete,
+				contextmenu: inprogress,
+				dblclick: incomplete
+
+			});
+		};
+
+		
+		grid = L.esri.featureLayer('http://mapstest.raleighnc.gov/arcgis/rest/services/PublicUtility/ValveCrewTracking/FeatureServer/1', {
             	onEachFeature: gridAction,
             	style: setGridStyle
             }).addTo(map);
+
+		
 
 		// leaflet API key tiler
 		//L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', { maxZoom: 18, detectRetina: true }).addTo(map);
